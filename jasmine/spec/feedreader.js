@@ -137,4 +137,9 @@ $(function() {
             });
          });
     });
+
+    // After finished with all testing return the page to its initial view settings
+    afterAll(function() {
+        loadFeed(0);
+    });
 }());
