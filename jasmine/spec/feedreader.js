@@ -108,9 +108,33 @@ $(function() {
     });
 
     /* TODO: Write a new test suite named "New Feed Selection" */
-
+    describe("New Feed Selection", function() {
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+
+         // Begin this test suite by running the loadFeed for the initial page
+         beforeEach(function(done) {
+            loadFeed(0, function() {
+                done();
+            });
+         });
+
+         // Once the beforeEach function is complete we should have "Udacity Blog" as the initial page
+         it('should have different content when new feed is loaded', function(done) {
+            var headerTitle = $('.header-title').text();
+
+            // Header changes for each page and we should check for that
+            expect(headerTitle).toBe("Udacity Blog");
+
+            // After getting "Udacity Blog" we run loadFeed again for the next page and test that header is "CSS Tricks"
+            loadFeed(1, function() {
+                headerTitle = $('.header-title').text();
+
+                expect(headerTitle).toBe("CSS Tricks");
+                done();
+            });
+         });
+    });
 }());
