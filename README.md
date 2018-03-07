@@ -1,6 +1,6 @@
 # Project Overview
 
-The tests are divided into four test suites, each with different purposes. They will run all run when the page initial loads. Their descriptions are as follows:
+The tests are divided into four test suites, each with different purposes. They will run all run when the page initial loads. To do that please begin by opening index.html on a web browser such as Google Chrome or Safari. The descriptions for each test suite are as follows:
 
 ## RSS Feeds
 

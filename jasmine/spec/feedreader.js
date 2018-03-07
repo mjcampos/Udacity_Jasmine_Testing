@@ -33,8 +33,7 @@ $(function() {
          */
          it('have URLs that are defined and with value', function() {
             allFeeds.forEach(function(feed) {
-                expect(feed.url).toBeDefined();
-                expect(feed.url.length).not.toBe(0);
+                expect(feed.url).toBeTruthy();
             });
          });
 
@@ -60,9 +59,9 @@ $(function() {
          * hiding/showing of the menu element.
          */
          it('should have the menu element hidden by default', function() {
-            var menu = $('body').attr('class');
+            var menuHidden = $('body').hasClass('menu-hidden');
 
-            expect(menu).toBe("menu-hidden");
+            expect(menuHidden).toBe(true);
          });
 
          /* TODO: Write a test that ensures the menu changes
@@ -72,17 +71,17 @@ $(function() {
           */
           it('should have the menu list appear when menu-icon clicked', function() {
             var menuIcon = $('.menu-icon-link');
-            var menu;
+            var menuHidden;
 
             menuIcon.click();
-            menu = $('body').attr('class');
+            menuHidden = $('body').hasClass("menu-hidden");
 
-            expect(menu).not.toBe("menu-hidden");
+            expect(menuHidden).toBe(false);
 
             menuIcon.click();
-            menu = $('body').attr('class');
+            menuHidden = $('body').hasClass("menu-hidden");
 
-            expect(menu).toBe("menu-hidden");
+            expect(menuHidden).toBe(true);
           });
     });
 
@@ -94,14 +93,12 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
-         beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });
-         });
+
+         // Begin this test suite by running the loadFeed for the initial page
+         beforeEach(done => loadFeed(0, () => done()));
 
          it('should contain a single .entry element within .feed after loadFeed completes its work', function() {
-            var entries = $('.entry');
+            var entries = $('.feed .entry');
 
             expect(entries.length).toBeGreaterThan(0);
          });
@@ -115,31 +112,21 @@ $(function() {
          */
 
          // Begin this test suite by running the loadFeed for the initial page
-         beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });
-         });
+         beforeEach(done => loadFeed(0, () => done()));
 
          // Once the beforeEach function is complete we should have "Udacity Blog" as the initial page
          it('should have different content when new feed is loaded', function(done) {
-            var headerTitle = $('.header-title').text();
+            var page1 = $('.feed').html();
 
-            // Header changes for each page and we should check for that
-            expect(headerTitle).toBe("Udacity Blog");
-
-            // After getting "Udacity Blog" we run loadFeed again for the next page and test that header is "CSS Tricks"
             loadFeed(1, function() {
-                headerTitle = $('.header-title').text();
+                page2 = $('.feed').html();
 
-                expect(headerTitle).toBe("CSS Tricks");
+                expect(page1).not.toBe(page2);
                 done();
             });
          });
     });
 
     // After finished with all testing return the page to its initial view settings
-    afterAll(function() {
-        loadFeed(0);
-    });
+    afterAll(() => loadFeed(0));
 }());
